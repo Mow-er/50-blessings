@@ -2,7 +2,9 @@ import discord
 from discord.ext import commands
 import re
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -26,11 +28,15 @@ async def on_message(message):
         try:
             await message.delete()
         except:
-            pass
+            await message.delete()
 
         await message.channel.send(f" **Nueva canción compartida**\n{message.content}")
 
-bot.run(os.getenv("TOKEN"))
+token = os.getenv("TOKEN")
+if not token:
+    print("no encontrado")
+else:
+    bot.run(token)
 
 
 
