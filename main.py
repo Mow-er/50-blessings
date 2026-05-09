@@ -29,9 +29,12 @@ async def on_message(message):
             await message.delete()
         except:
             pass
+
+        await message.channel.send(f" **Nueva canción compartida**\n{message.content}")
+        
     else:
         try:        
-            await message.channel.send(f" **Nueva canción compartida**\n{message.content}")
+           await message.delete()
         except:
             pass    
 
