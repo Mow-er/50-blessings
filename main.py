@@ -28,9 +28,12 @@ async def on_message(message):
         try:
             await message.delete()
         except:
-            await message.delete()
-
-        await message.channel.send(f" **Nueva canción compartida**\n{message.content}")
+            pass
+    else:
+        try:        
+            await message.channel.send(f" **Nueva canción compartida**\n{message.content}")
+        except:
+            pass    
 
 token = os.getenv("TOKEN")
 if not token:
