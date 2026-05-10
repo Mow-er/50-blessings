@@ -13,7 +13,7 @@ bot = commands.Bot(command_prefix='-', intents=intents)
 
 CANAL_MUSICA_ID = 1502012822811574432
 
-YOUTUBE_REGEX = re.compile(r'(https?://)?(www\.)?(youtube|youtu|music\.youtube)\.(com|be)/.+')
+YOUTUBE_REGEX = re.compile(r'(https?://)?(www\.)?(youtube|youtu|music\.youtube)\.(com|be)/.+', re.IGNORECASE)
 
 
 @bot.event
@@ -23,20 +23,19 @@ async def on_message(message):
 
     if message.channel.id != CANAL_MUSICA_ID:
         return
+    
+    tiene_youtube = YOUTUBE_REGEX.search(message.content)
 
-    if YOUTUBE_REGEX.search(message.content):
         try:
-            await message.delete()
-        except:
-            pass
-
-        await message.channel.send(f" **Nueva canción compartida**\n{message.content}")
-        
-    else:
-        try:        
-           await message.delete()
-        except:
-            pass    
+            if tiene_youtube:
+                await message.delete()
+                await message.channel.send(f" **Nueva canción compartida**\n{message.content}")
+            else:
+                await message.delete()            
+        except discord.Forbidden:
+            print("no puedo")
+        except Exception as e:
+            print(f"error: {e}")
 
 token = os.getenv("TOKEN")
 if not token:
